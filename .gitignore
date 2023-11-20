@@ -1,0 +1,3 @@
+# omit target folder and log file
+/target/
+log
