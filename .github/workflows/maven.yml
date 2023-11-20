@@ -26,11 +26,11 @@ jobs:
     - name: Test
       run: mvn test
 
-    - name: Package
-      run: mvn package
+    # - name: Package
+    #   run: mvn package
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: my-artifact
-        path: target/*.jar
+    # - name: Upload artifact
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: my-artifact
+    #     path: target/*.jar
