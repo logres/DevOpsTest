@@ -13,7 +13,7 @@ public class PrimAlgorithm {
         Arrays.fill(dist, INF);
         dist[0] = 0;
         parent[0] = -1;
-
+        // JENKINS
         int totalWeight = 0;
 
         for (int i = 0; i < numVertices - 1; i++) {
