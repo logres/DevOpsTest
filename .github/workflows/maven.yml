@@ -38,8 +38,6 @@ jobs:
 
     - name: Merge to main
       run: |
-        git fetch origin main:main
-        git fetch origin dev:dev
-        git checkout main
+        git switch main
         git merge dev
-        git push origin main
+        git push origin main:main
