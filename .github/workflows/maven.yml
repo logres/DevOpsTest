@@ -2,13 +2,11 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: 
+      - dev # 修改这里，使workflow在push到dev分支时触发
 
 jobs:
-  build:
-
+  build_and_test:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,11 +24,21 @@ jobs:
     - name: Test
       run: mvn test
 
-    # - name: Package
-    #   run: mvn package
+  merge_to_main:
+    needs: build_and_test # 只有当build_and_test job成功完成后才会运行这个job
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    # - name: Upload artifact
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: my-artifact
-    #     path: target/*.jar
+    - name: Configure Git
+      run: |
+        git config --global user.email "logres_king@126.com"
+        git config --global user.name "Logres"
+
+    - name: Merge to main
+      run: |
+        git fetch origin main:main
+        git checkout main
+        git merge --no-ff dev
+        git push origin main
