@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class PrimAlgorithm {
     private static final int INF = Integer.MAX_VALUE;
-    // DEV
+    // DEV DEV
     public static int prim(int[][] graph) {
         int numVertices = graph.length;
         boolean[] visited = new boolean[numVertices];
