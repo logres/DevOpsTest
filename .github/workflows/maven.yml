@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: 
+    branches:
       - dev # 修改这里，使workflow在push到dev分支时触发
 
 jobs:
@@ -10,32 +10,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 8
-      uses: actions/setup-java@v2
-      with:
-        java-version: '8'
-        distribution: 'adopt'
-        cache: 'maven'
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: "8"
+          distribution: "adopt"
+          cache: "maven"
 
-    - name: Validate
-      run: mvn validate
+      - name: Validate
+        run: mvn validate
 
-    - name: Test
-      run: mvn test
+      - name: Test
+        run: mvn test
 
   createPullRequest:
+    needs: build_and_test
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: dev
 
-    - name: Create Pull Request
-      uses: repo-sync/pull-request@v2
-      with:
-        source_branch: "dev"
-        destination_branch: "main"
-        pr_title: "Auto PR from dev to main"
-        pr_body: "This is an auto PR."
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup GitHub CLI
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+          sudo apt-add-repository https://cli.github.com/packages
+          sudo apt update
+          sudo apt install gh
+
+      - name: Authenticate with GitHub CLI
+        run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+
+      - name: Create Pull Request
+        run: gh pr create --title "Auto PR from dev to main" --body "This is an auto PR." --base main --head dev --repo ${{ github.repository }}
