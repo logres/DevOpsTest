@@ -28,7 +28,7 @@ jobs:
     needs: build_and_test
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.ACCTOKEN }}
 
     steps:
       - name: Checkout code
